@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+* {
+    font-family: 'Inter';
+}
+
+body {
+    margin: 0;
+    
+    max-height:100vh;
+    min-width:100vh;
+}
+
+canvas {
+    background: radial-gradient(circle, #eee, #fff);
+    max-height:60vh;
+    min-width:100%;
+}
+
+h1 {
+    text-align: center;
+    margin: 1vh;
+}
+
+section {
+    text-align: center;
+}
+
+.select-menu {
+    columns: 3;
+    margin:5vh;
+    text-align: center;
+}

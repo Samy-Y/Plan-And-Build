@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Plan And Build</title>
+	<link rel="stylesheet" href="/style.css">
+	<script type="importmap">
+		{
+		"imports": {
+			"three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+			"three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+			}
+		}
+	</script>
+</head>
+<body>
+	<h1>Plan and Build</h1>
+	<canvas id="canvas"></canvas>
+	<section>
+		<h2>Select blocks</h2>
+		<hr>
+		<div class="select-menu">
+			<div>
+				<h3>Base</h3>
+				<select id="blocks-base">
+					<option value="oak_planks">Oak Planks</option>
+					<option value="cobblestone">Cobblestone</option>
+					<option value="bricks">Bricks</option>
+				</select>
+			</div>
+			<div>
+				<h3>Middle</h3>
+				<select id="blocks-middle">
+					<option value="oak_planks">Oak Planks</option>
+					<option value="cobblestone">Cobblestone</option>
+					<option value="bricks">Bricks</option>
+				</select>
+			</div>
+			<div>
+				<h3>Top</h3>
+				<select id="blocks-top">
+					<option value="oak_planks">Oak Planks</option>
+					<option value="cobblestone">Cobblestone</option>
+					<option value="bricks">Bricks</option>
+				</select>
+			</div>
+		</div>
+	</section>
+	<script type="module" src="/main.js"></script>
+</body>
+</html>
