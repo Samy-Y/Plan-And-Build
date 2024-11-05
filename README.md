@@ -1,5 +1,5 @@
 # Plan-And-Build
-Plan simple Minecraft builds, try different block and color combinations to see what they'll look like!
+A simple Minecraft builds 3D visualizer made in JavaScript using ThreeJS. Try different block combinations to see what your building could look like!
 
 ---
 
