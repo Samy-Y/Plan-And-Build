@@ -1,6 +1,6 @@
 {
-    "oak_planks": "public/textures/oak_planks.png",
-    "cobblestone": "public/textures/cobblestone.png",
-    "bricks": "public/textures/bricks.png",
-    "glass": "public/textures/glass.png"
-}  
+	"oak_planks": "textures/oak_planks.png",
+	"cobblestone": "textures/cobblestone.png",
+	"bricks": "textures/bricks.png",
+	"glass": "textures/glass.png"
+}

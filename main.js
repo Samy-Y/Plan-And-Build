@@ -47,16 +47,19 @@ function loadStructure(structureFile) {
 		// clear the scene before loading new structure
 		// i know i could have used ImageUtils.loadTexture but i discovered this way too late :(
 		clearScene();
-		data.blocks.base.forEach(block => { 
+		data.components.base.blocks.forEach(block => { 
 			createBlock(block[0], block[1], block[2], "cobblestone"); // using arrays to store "coordinates"
 		});
-		data.blocks.middle.forEach(block => {
+		data.components.base.stairs.forEach(stair => { 
+			createStairs(stair[0], stair[1], stair[2], "cobblestone");
+		});
+		data.components.middle.blocks.forEach(block => {
 			createBlock(block[0], block[1], block[2], "oak_planks");
 		});
-		data.blocks.top.forEach(block => {
+		data.components.top.blocks.forEach(block => {
 			createBlock(block[0], block[1], block[2], "bricks");
 		});
-		data.blocks.windows.forEach(block => {
+		data.components.windows.blocks.forEach(block => {
 			createBlock(block[0], block[1], block[2], "glass");
 		});
 	})
@@ -84,6 +87,45 @@ function createBlock(x, y, z, textureName) {
 	cube.position.set(x, y, z);
 	scene.add(cube);
 }
+
+function createStairs(x, y, z, textureName) {
+    const group = new THREE.Group();
+
+    // Step 1: Larger step
+    const textureMap1 = textures[textureName].clone();
+    textureMap1.wrapS = THREE.RepeatWrapping;
+    textureMap1.wrapT = THREE.RepeatWrapping;
+    textureMap1.repeat.set(1, 0.5); // Adjust repeat based on geometry height
+
+    const material1 = new THREE.MeshStandardMaterial({ map: textureMap1, transparent: true });
+
+    const geometry1 = new THREE.BoxGeometry(1, 0.5, 1);
+    const step1 = new THREE.Mesh(geometry1, material1);
+    step1.position.set(0, 0.25, 0); // Center vertically based on height
+
+    // Step 2: Smaller step
+    const textureMap2 = textures[textureName].clone();
+    textureMap2.wrapS = THREE.RepeatWrapping;
+    textureMap2.wrapT = THREE.RepeatWrapping;
+    textureMap2.repeat.set(0.5, 0.5); // Adjust repeat based on geometry height
+
+    const material2 = new THREE.MeshStandardMaterial({ map: textureMap2, transparent: true });
+
+    const geometry2 = new THREE.BoxGeometry(0.5, 0.5, 1);
+    const step2 = new THREE.Mesh(geometry2, material2);
+    step2.position.set(0.25, 0.5 + 0.25, 0); // Position above the first step
+
+    // Add steps to the group
+    group.add(step1);
+    group.add(step2);
+
+    // Position the entire stairs group
+    group.position.set(x, y - 0.5, z); // Adjust y to account for step heights
+
+    // Add the group to the scene
+    scene.add(group);
+}
+
 
 // lighting
 const ambientLight = new THREE.AmbientLight(0xffffff, 2);
