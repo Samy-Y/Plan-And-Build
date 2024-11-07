@@ -33,9 +33,20 @@ fetch("./data/textures.json")
 			// defaults to no color space for some reason
 			textures[key] = texture;
 		});
-	loadStructure("house.json"); // default structure (gui soonTM)
 	})
 	.catch(error => console.error("Error loading textures.json:", error));
+
+const selectedBlocks = { // default values
+	base: "cobblestone",   
+	middle: "oak_planks",
+	top: "bricks"     
+};
+
+function updateSelectedBlocks() {
+	selectedBlocks.base = document.getElementById("blocks-base").value;
+	selectedBlocks.middle = document.getElementById("blocks-middle").value;
+	selectedBlocks.top = document.getElementById("blocks-top").value;
+}
 
 function loadStructure(structureFile) {
 	fetch(`./data/${structureFile}`)
@@ -48,20 +59,29 @@ function loadStructure(structureFile) {
 		// i know i could have used ImageUtils.loadTexture but i discovered this way too late :(
 		clearScene();
 		data.components.base.blocks.forEach(block => { 
-			createBlock(block[0], block[1], block[2], "cobblestone"); // using arrays to store "coordinates"
+			createBlock(block[0], block[1], block[2], selectedBlocks.base); // using arrays to store "coordinates"
 		});
 		data.components.base.stairs.forEach(stair => { 
-			createStairs(stair[0], stair[1], stair[2], "cobblestone");
+			createStairs(stair[0], stair[1], stair[2], selectedBlocks.base, stair[3]);
 		});
+
 		data.components.middle.blocks.forEach(block => {
-			createBlock(block[0], block[1], block[2], "oak_planks");
+			createBlock(block[0], block[1], block[2], selectedBlocks.middle);
 		});
+		data.components.middle.stairs.forEach(stair => { 
+			createStairs(stair[0], stair[1], stair[2], selectedBlocks.middle, stair[3]);
+		});
+
 		data.components.top.blocks.forEach(block => {
-			createBlock(block[0], block[1], block[2], "bricks");
+			createBlock(block[0], block[1], block[2], selectedBlocks.top);
 		});
+		data.components.top.stairs.forEach(stair => { 
+			createStairs(stair[0], stair[1], stair[2], selectedBlocks.top, stair[3]);
+		});
+
 		data.components.windows.blocks.forEach(block => {
 			createBlock(block[0], block[1], block[2], "glass");
-		});
+		}); // no stairs
 	})
 	.catch(error => console.error(`Error loading ${structureFile}:\n`, error));
 }
@@ -88,7 +108,7 @@ function createBlock(x, y, z, textureName) {
 	scene.add(cube);
 }
 
-function createStairs(x, y, z, textureName) {
+function createStairs(x, y, z, textureName, orientation) {
     const group = new THREE.Group();
 
     // Step 1: Larger step
@@ -113,16 +133,16 @@ function createStairs(x, y, z, textureName) {
 
     const geometry2 = new THREE.BoxGeometry(0.5, 0.5, 1);
     const step2 = new THREE.Mesh(geometry2, material2);
-    step2.position.set(0.25, 0.5 + 0.25, 0); // Position above the first step
+    step2.position.set(0.25, 0.5 +0.25, 0);
 
-    // Add steps to the group
     group.add(step1);
     group.add(step2);
 
-    // Position the entire stairs group
-    group.position.set(x, y - 0.5, z); // Adjust y to account for step heights
+    group.position.set(x, y - 0.5, z);
+	console.log(orientation)
 
-    // Add the group to the scene
+	group.rotateY(orientation*Math.PI/2);
+
     scene.add(group);
 }
 
@@ -143,8 +163,31 @@ scene.add(spotlight);
 
 renderer.shadowMap.enabled = true;
 
-camera.position.set(8, 8, 8);
-camera.lookAt(0, 0, 0);
+camera.position.set(-10, 8, 10);
+camera.lookAt(new THREE.Vector3(0, 8, 0));
+
+function loadSelectedStructure() {
+    const structureSelector = document.getElementById("structure-selector");
+    const selectedStructure = structureSelector.value; // Get selected structure from dropdown
+
+    // Determine which structure file to load based on the selection
+    let structureFile;
+    if (selectedStructure === "house") {
+        structureFile = "house.json";
+    } else if (selectedStructure === "tower") {
+        structureFile = "tower.json";
+    }
+
+    // Clear existing structure and load the new one
+    clearScene();
+    loadStructure(structureFile);
+}
+
+// Add event listener for the "Render Structure" button
+document.getElementById("render-button").addEventListener("click", loadSelectedStructure);
+document.getElementById("render-button").addEventListener("click", updateSelectedBlocks);
+
+loadSelectedStructure();
 
 function animate() {
 	requestAnimationFrame(animate);

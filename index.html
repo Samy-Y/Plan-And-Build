@@ -1,55 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Plan And Build</title>
-	<link rel="stylesheet" href="style.css">
-	<script type="importmap">
-		{
-		"imports": {
-			"three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
-			"three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
-			}
-		}
-	</script>
+    <meta charset="UTF-8">
+    <title>Plan and Build</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+        }
+    }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 <body>
-	<canvas id="canvas"></canvas>
-	<section>
-		<h1>Plan and Build</h1>
-		<hr>
-		<h2>Select Structure</h2>
-		<select id="structures">
-			<option value="oak_planks">House</option>
-		</select>
-		<h2>Select blocks</h2>
-		<div class="select-menu">
-			<div>
-				<h3>Base</h3>
-				<select id="blocks-base">
-					<option value="oak_planks">Oak Planks</option>
-					<option value="cobblestone">Cobblestone</option>
-					<option value="bricks">Bricks</option>
+    <div class="container">
+        <canvas id="canvas"></canvas>
+        <section class="controls">
+            <h1>Plan and Build</h1>
+			<h2 class="subtitle">Developed by Samy</h2>
+            <hr>
+            <div class="control-group">
+				<h2>Select Structure</h2>
+				<select id="structure-selector">
+					<option value="house" selected>House</option>
+					<!-- if you can read this, know that i'm too lazy to create a "tower.json" structure and that it will take too much time and i'm sleepy and it's 30°c outside in november i'm dying -->
 				</select>
+				<p>More coming next!</p>
 			</div>
-			<div>
-				<h3>Middle</h3>
-				<select id="blocks-middle">
-					<option value="oak_planks">Oak Planks</option>
-					<option value="cobblestone">Cobblestone</option>
-					<option value="bricks">Bricks</option>
-				</select>
-			</div>
-			<div>
-				<h3>Top</h3>
-				<select id="blocks-top">
-					<option value="oak_planks">Oak Planks</option>
-					<option value="cobblestone">Cobblestone</option>
-					<option value="bricks">Bricks</option>
-				</select>
-			</div>
-		</div>
-	</section>
-	<script type="module" src="main.js"></script>
+            <div class="control-group">
+                <h2>Select Blocks</h2>
+                <div class="select-menu">
+                    <div class="block-selector">
+                        <h3>Base</h3>
+                        <select id="blocks-base">
+                            <option value="oak_planks">Oak Planks</option>
+                            <option value="cobblestone" selected>Cobblestone</option>
+                            <option value="bricks">Bricks</option>
+                        </select>
+                    </div>
+                    <div class="block-selector">
+                        <h3>Middle</h3>
+                        <select id="blocks-middle">
+                            <option value="oak_planks" selected>Oak Planks</option>
+                            <option value="cobblestone">Cobblestone</option>
+                            <option value="bricks">Bricks</option>
+                        </select>
+                    </div>
+                    <div class="block-selector">
+                        <h3>Top</h3>
+                        <select id="blocks-top">
+                            <option value="oak_planks">Oak Planks</option>
+                            <option value="cobblestone">Cobblestone</option>
+                            <option value="bricks" selected>Bricks</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <button id="render-button" class="action-button">Render Structure</button>
+			<p>Move using your mouse wheel, left and right click buttons!</p>
+        </section>
+    </div>
+    <script type="module" src="main.js"></script>
 </body>
 </html>
