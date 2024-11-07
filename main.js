@@ -111,23 +111,21 @@ function createBlock(x, y, z, textureName) {
 function createStairs(x, y, z, textureName, orientation) {
     const group = new THREE.Group();
 
-    // Step 1: Larger step
     const textureMap1 = textures[textureName].clone();
     textureMap1.wrapS = THREE.RepeatWrapping;
     textureMap1.wrapT = THREE.RepeatWrapping;
-    textureMap1.repeat.set(1, 0.5); // Adjust repeat based on geometry height
+    textureMap1.repeat.set(1, 0.5); 
 
     const material1 = new THREE.MeshStandardMaterial({ map: textureMap1, transparent: true });
 
     const geometry1 = new THREE.BoxGeometry(1, 0.5, 1);
     const step1 = new THREE.Mesh(geometry1, material1);
-    step1.position.set(0, 0.25, 0); // Center vertically based on height
+    step1.position.set(0, 0.25, 0); 
 
-    // Step 2: Smaller step
     const textureMap2 = textures[textureName].clone();
     textureMap2.wrapS = THREE.RepeatWrapping;
     textureMap2.wrapT = THREE.RepeatWrapping;
-    textureMap2.repeat.set(0.5, 0.5); // Adjust repeat based on geometry height
+    textureMap2.repeat.set(0.5, 0.5);
 
     const material2 = new THREE.MeshStandardMaterial({ map: textureMap2, transparent: true });
 
@@ -168,9 +166,8 @@ camera.lookAt(new THREE.Vector3(0, 8, 0));
 
 function loadSelectedStructure() {
     const structureSelector = document.getElementById("structure-selector");
-    const selectedStructure = structureSelector.value; // Get selected structure from dropdown
+    const selectedStructure = structureSelector.value;
 
-    // Determine which structure file to load based on the selection
     let structureFile;
     if (selectedStructure === "house") {
         structureFile = "house.json";
@@ -178,12 +175,10 @@ function loadSelectedStructure() {
         structureFile = "tower.json";
     }
 
-    // Clear existing structure and load the new one
     clearScene();
     loadStructure(structureFile);
 }
 
-// Add event listener for the "Render Structure" button
 document.getElementById("render-button").addEventListener("click", loadSelectedStructure);
 document.getElementById("render-button").addEventListener("click", updateSelectedBlocks);
 
