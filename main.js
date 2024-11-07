@@ -168,12 +168,7 @@ function loadSelectedStructure() {
     const structureSelector = document.getElementById("structure-selector");
     const selectedStructure = structureSelector.value;
 
-    let structureFile;
-    if (selectedStructure === "house") {
-        structureFile = "house.json";
-    } else if (selectedStructure === "tower") {
-        structureFile = "tower.json";
-    }
+    let structureFile = "house.json" // the only structure available now, no need for an if :(
 
     clearScene();
     loadStructure(structureFile);
