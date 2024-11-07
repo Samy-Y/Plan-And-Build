@@ -2,6 +2,8 @@
 
 **Plan and Build** is a primitive web-based 3D Minecraft structure planner that enables users to design and visualize custom structures with selectable block types built with JavaScript and ThreeJS.
 
+**Website:** [https://samy-y.github.io/Plan-And-Build/]
+
 ---
 
 ## Installation
