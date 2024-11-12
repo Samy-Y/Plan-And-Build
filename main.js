@@ -82,6 +82,10 @@ function loadStructure(structureFile) {
 		data.components.windows.blocks.forEach(block => {
 			createBlock(block[0], block[1], block[2], "glass");
 		}); // no stairs
+
+		data.components.doors.blocks.forEach(door => {
+			createDoor(door[0],door[1],door[2],"oak_door", door[3]);
+		})
 	})
 	.catch(error => console.error(`Error loading ${structureFile}:\n`, error));
 }
@@ -93,7 +97,7 @@ function clearScene() {
 function createBlock(x, y, z, textureName) {
 	const geometry = new THREE.BoxGeometry(1, 1, 1);
 
-	const textureMap = textures[textureName];
+	const textureMap = textures[textureName].clone(); // security measure or else they'll share the same instance in mem, and that's bad
 	const material = new THREE.MeshStandardMaterial({ map: textureMap, transparent: true });
 	const cube = new THREE.Mesh(geometry, material);
 
@@ -125,7 +129,7 @@ function createStairs(x, y, z, textureName, orientation) {
     const textureMap2 = textures[textureName].clone();
     textureMap2.wrapS = THREE.RepeatWrapping;
     textureMap2.wrapT = THREE.RepeatWrapping;
-    textureMap2.repeat.set(0.5, 0.5);
+    textureMap2.repeat.set(1, 0.5);
 
     const material2 = new THREE.MeshStandardMaterial({ map: textureMap2, transparent: true });
 
@@ -137,11 +141,27 @@ function createStairs(x, y, z, textureName, orientation) {
     group.add(step2);
 
     group.position.set(x, y - 0.5, z);
-	console.log(orientation)
 
 	group.rotateY(orientation*Math.PI/2);
 
     scene.add(group);
+}
+
+function createDoor(x,y,z,textureName,orientation){
+
+	const geometry = new THREE.BoxGeometry(1, 2, 0.25);
+
+	const textureMap = textures[textureName].clone();
+	textureMap.wrapS = THREE.RepeatWrapping;
+	textureMap.wrapT = THREE.RepeatWrapping;
+	textureMap.repeat.set(0.5, 0.5);
+	const material = new THREE.MeshStandardMaterial({ map: textureMap, transparent: true });
+	const door = new THREE.Mesh(geometry, material);
+
+	door.position.set(x, y+0.5, z);
+	door.rotateY(orientation * Math.PI/2); // i hate this
+
+	scene.add(door);
 }
 
 
@@ -168,10 +188,8 @@ function loadSelectedStructure() {
     const structureSelector = document.getElementById("structure-selector");
     const selectedStructure = structureSelector.value;
 
-    let structureFile = "house.json" // the only structure available now, no need for an if :(
-
     clearScene();
-    loadStructure(structureFile);
+    loadStructure(selectedStructure);
 }
 
 document.getElementById("render-button").addEventListener("click", loadSelectedStructure);

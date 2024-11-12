@@ -1,0 +1,34 @@
+{
+    "components":{
+        "base":{
+            "blocks":[
+                [0,0,0],
+                [0,1,0]
+                ],
+            "stairs":[
+                
+            ]
+        },
+        "middle":{
+            "blocks":[
+                
+            ],
+            "stairs":[]
+        },
+        "top":{
+            "blocks":[
+                
+            ],
+            "stairs":[
+                
+            ]
+        },
+        "windows":{
+            "blocks":[
+                
+            ]
+        }
+    }
+        
+}
+  
