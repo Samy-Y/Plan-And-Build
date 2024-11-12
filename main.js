@@ -91,7 +91,7 @@ function loadStructure(structureFile) {
 }
 
 function clearScene() {
-	scene.children = scene.children.filter(child => !(child instanceof THREE.Mesh || child instanceof THREE.LineSegments));
+	scene.children = scene.children.filter(child => !(child instanceof THREE.Mesh || child instanceof THREE.LineSegments || child instanceof THREE.Group));
 }
 
 function createBlock(x, y, z, textureName) {
@@ -154,7 +154,7 @@ function createDoor(x,y,z,textureName,orientation){
 	const textureMap = textures[textureName].clone();
 	textureMap.wrapS = THREE.RepeatWrapping;
 	textureMap.wrapT = THREE.RepeatWrapping;
-	textureMap.repeat.set(0.5, 0.5);
+	textureMap.repeat.set(1, 1);
 	const material = new THREE.MeshStandardMaterial({ map: textureMap, transparent: true });
 	const door = new THREE.Mesh(geometry, material);
 
@@ -178,6 +178,7 @@ spotlight.position.set(15, 30, 15);
 spotlight.castShadow = true;
 scene.add(spotlight);
 
+// render
 
 renderer.shadowMap.enabled = true;
 
@@ -191,6 +192,19 @@ function loadSelectedStructure() {
     clearScene();
     loadStructure(selectedStructure);
 }
+
+function onWindowResize() {
+
+	const width = window.innerWidth;
+	const height = window.innerHeight;
+
+	camera.aspect = width / height;
+	camera.updateProjectionMatrix();
+
+	renderer.setSize( width, height );
+}
+
+window.addEventListener( 'resize', onWindowResize ); // doesn't work for some reason
 
 document.getElementById("render-button").addEventListener("click", loadSelectedStructure);
 document.getElementById("render-button").addEventListener("click", updateSelectedBlocks);
