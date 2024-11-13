@@ -47,6 +47,10 @@ canvas {
     margin-bottom: 2vh;
 }
 
+.top img {
+    max-width: 100%;
+}
+
 h1 {
     font-family: 'Open Sans', sans-serif;
     font-size: 3rem;
