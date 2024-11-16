@@ -1,6 +1,11 @@
 {
     "name":"Simple Tower",
     "components":{
+        "ground":{
+            "blocks":[
+                [-1,-1,-1]
+            ]
+        },
         "base":{
             "blocks":[
                 [0,0,0],
@@ -109,6 +114,11 @@
         "doors":{
             "blocks":[
                 
+            ]
+        },
+        "grass_block":{
+            "blocks":[
+
             ]
         }
     }

@@ -1,7 +1,17 @@
 {
-	"oak_planks": "textures/oak_planks.png",
-	"oak_door": "textures/oak_door.png",
-	"cobblestone": "textures/cobblestone.png",
-	"bricks": "textures/bricks.png",
-	"glass": "textures/glass.png"
+	"oak_planks":"textures/oak_planks.png",
+	"oak_door":"textures/oak_door.png",
+	"cobblestone":"textures/cobblestone.png",
+	"bricks":"textures/bricks.png",
+	"glass":"textures/glass.png",
+	"grass_block":{
+		"not_repeatable":true,
+		"front":"textures/grass_block_side.png",
+		"behind":"textures/grass_block_side.png",
+		"top":"textures/grass_block_top.png",
+		"bottom":"textures/dirt.png",
+		"left":"textures/grass_block_side.png",
+		"right":"textures/grass_block_side.png"
+	},
+	"dirt":"textures/dirt.png"
 }

@@ -26,15 +26,30 @@ fetch("./data/textures.json")
 	})
 	.then(data => {
 		Object.keys(data).forEach(key => {
-			const texture = new THREE.TextureLoader().load(data[key]);
-			texture.minFilter = THREE.NearestFilter; // When texture scaled down
-			texture.magFilter = THREE.NearestFilter; // When texture scaled up
-			texture.colorSpace = THREE.SRGBColorSpace; // so that the textures don't look washed out
-			// defaults to no color space for some reason
-			textures[key] = texture;
+			textures[key] = {};
+			if (data[key]["not_repeatable"]) {
+				Object.keys(data[key]).forEach(texture_part => {
+					if (texture_part != "not_repeatable") {
+						const texture = new THREE.TextureLoader().load(data[key][texture_part]);
+						texture.minFilter = THREE.NearestFilter;
+						texture.magFilter = THREE.NearestFilter;
+						texture.colorSpace = THREE.SRGBColorSpace;
+						textures[key][texture_part] = texture;	
+					}
+				})
+				
+			} else {
+				const texture = new THREE.TextureLoader().load(data[key]);
+				texture.minFilter = THREE.NearestFilter; // When texture scaled down
+				texture.magFilter = THREE.NearestFilter; // When texture scaled up
+				texture.colorSpace = THREE.SRGBColorSpace; // so that the textures don't look washed out
+				// defaults to no color space for some reason
+				textures[key] = texture;
+			}
 		});
+		console.log(textures)
 	})
-	.catch(error => console.error("Error loading textures.json:", error));
+	.catch(error => console.error("Error loading textures.json:\n", error));
 
 const selectedBlocks = { // default values
 	base: "cobblestone",   
@@ -56,35 +71,38 @@ function loadStructure(structureFile) {
 	})
 	.then(data => {
 		// clear the scene before loading new structure
-		// i know i could have used ImageUtils.loadTexture but i discovered this way too late :(
 		clearScene();
 		data.components.base.blocks.forEach(block => { 
-			createBlock(block[0], block[1], block[2], selectedBlocks.base); // using arrays to store "coordinates"
+			createBlock(block[0], block[1], block[2], selectedBlocks.base, true); // using arrays to store "coordinates"
 		});
 		data.components.base.stairs.forEach(stair => { 
 			createStairs(stair[0], stair[1], stair[2], selectedBlocks.base, stair[3]);
 		});
 
 		data.components.middle.blocks.forEach(block => {
-			createBlock(block[0], block[1], block[2], selectedBlocks.middle);
+			createBlock(block[0], block[1], block[2], selectedBlocks.middle, true);
 		});
 		data.components.middle.stairs.forEach(stair => { 
 			createStairs(stair[0], stair[1], stair[2], selectedBlocks.middle, stair[3]);
 		});
 
 		data.components.top.blocks.forEach(block => {
-			createBlock(block[0], block[1], block[2], selectedBlocks.top);
+			createBlock(block[0], block[1], block[2], selectedBlocks.top, true);
 		});
 		data.components.top.stairs.forEach(stair => { 
 			createStairs(stair[0], stair[1], stair[2], selectedBlocks.top, stair[3]);
 		});
 
 		data.components.windows.blocks.forEach(block => {
-			createBlock(block[0], block[1], block[2], "glass");
+			createBlock(block[0], block[1], block[2], "glass", true);
 		}); // no stairs
 
 		data.components.doors.blocks.forEach(door => {
 			createDoor(door[0],door[1],door[2],"oak_door", door[3]);
+		})
+
+		data.components.grass_block.blocks.forEach(grass_block => {
+			createBlock(grass_block[0],grass_block[1],grass_block[2],"grass_block",false);
 		})
 	})
 	.catch(error => console.error(`Error loading ${structureFile}:\n`, error));
@@ -94,11 +112,25 @@ function clearScene() {
 	scene.children = scene.children.filter(child => !(child instanceof THREE.Mesh || child instanceof THREE.LineSegments || child instanceof THREE.Group));
 }
 
-function createBlock(x, y, z, textureName) {
+function createBlock(x, y, z, texture, repeatTexture) {
 	const geometry = new THREE.BoxGeometry(1, 1, 1);
 
-	const textureMap = textures[textureName].clone(); // security measure or else they'll share the same instance in mem, and that's bad
-	const material = new THREE.MeshStandardMaterial({ map: textureMap, transparent: true });
+
+	let textureMap;
+	let material;
+	if (repeatTexture) {
+		textureMap = textures[texture].clone(); // security measure or else they'll share the same instance in mem, and that's bad
+		material = new THREE.MeshStandardMaterial({ map: textureMap, transparent: true });
+	} else {
+		material = [ 
+			new THREE.MeshStandardMaterial({ map: textures[texture].front.clone(), transparent: true }),
+			new THREE.MeshStandardMaterial({ map: textures[texture].behind.clone(), transparent: true }),
+			new THREE.MeshStandardMaterial({ map: textures[texture].top.clone(), transparent: true }),
+			new THREE.MeshStandardMaterial({ map: textures[texture].bottom.clone(), transparent: true }),
+			new THREE.MeshStandardMaterial({ map: textures[texture].left.clone(), transparent: true }),
+			new THREE.MeshStandardMaterial({ map: textures[texture].right.clone(), transparent: true })
+		];
+	}
 	const cube = new THREE.Mesh(geometry, material);
 
 	// outlines
@@ -110,6 +142,10 @@ function createBlock(x, y, z, textureName) {
 
 	cube.position.set(x, y, z);
 	scene.add(cube);
+}
+
+function placeBlocks(coords1,coords2,texture,repeatTexture) {
+	// work in progress
 }
 
 function createStairs(x, y, z, textureName, orientation) {
