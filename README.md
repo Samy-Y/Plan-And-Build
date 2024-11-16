@@ -1,4 +1,4 @@
-# Plan and Build
+# Plan and Build v1.2
 
 **Plan and Build** is a primitive web-based 3D Minecraft structure planner that enables users to design and visualize custom structures with selectable block types built with JavaScript and ThreeJS.
 
@@ -41,13 +41,8 @@
 
 ```
 plan-and-build/
-├── data/
-│   ├── house.json
-│   └── textures.json
-├── textures/
-│   ├── oak_planks.png
-│   ├── cobblestone.png
-│   └── bricks.png
+├── data/ ...
+├── textures/ ...
 ├── index.html
 ├── main.js
 ├── style.css
@@ -56,6 +51,6 @@ plan-and-build/
 
 ## To-do list
 
-These are features I plan on adding to this project:
-- **Adding Structures**: Add new JSON files in the `data/` directory with structure data.
-- **Adding Blocks**: Add textures in the `textures/` directory and reference them in `textures.json`.
+- **Adding a larger selection of blocks to choose from.**
+- **Optimizing structure construction.**
+- **Adding schematica support**: That will take **a `lot`** of time.
